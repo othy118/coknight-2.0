@@ -49,3 +49,20 @@ Python · PyTorch · OpenAI Gym (Box2D) · NumPy · Matplotlib · Seaborn
 ## Author
 
 Othmane Alaoui — [github.com/othy118](https://github.com/othy118)
+
+## Architecture
+
+```mermaid
+flowchart LR
+    E[LunarLander-v2<br/>8-dim state] --> A[Edge agent<br/>ε-greedy policy]
+    A --> C{Compression}
+    C -->|Q| Q[8-bit quantization<br/>scale + offset]
+    C -->|F| F[Selective transmission<br/>α·max abs threshold]
+    C -->|Q+F| H[6-bit + masking]
+    Q --> S[Edge server<br/>DQN 8→128→256→4]
+    F --> S
+    H --> S
+    S -->|Q-values / action| A
+    S --> R[(Replay buffer<br/>100k)]
+    R -->|batch 256, AdamW, MSE TD| S
+```
