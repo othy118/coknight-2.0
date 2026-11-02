@@ -1,0 +1,8 @@
+﻿torch
+numpy<2
+gym[box2d]==0.26.2
+pygame
+matplotlib
+seaborn
+pandas
+jupyter
